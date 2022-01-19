@@ -1,0 +1,29 @@
+{
+    "data":[
+        {
+            "id":1,
+            "name":"Happy",
+            "email":"happy123@gmail.com"
+        },
+        {
+            "id":2,
+            "name":"Kaur",
+            "email":"Kaur123@gmail.com"
+        },
+        {
+            "id":3,
+            "name":"Raj",
+            "email":"Raj123@gmail.com"
+        },
+        {
+            "id":4,
+            "name":"Harpreet",
+            "email":"Harpreet123@gmail.com"
+        },
+        {
+            "id":5,
+            "name":"Kuljit",
+            "email":"Kuljit123@gmail.com"
+        }
+    ]
+}
