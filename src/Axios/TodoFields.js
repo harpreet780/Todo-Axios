@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TodoFields = ({ onAdd, todoData, change, onDelete, data, onEdit, selectItems, error,onClearData }) => {
+const TodoFields = ({ onAdd, todoData, change, onDelete, data, onEdit, selectItems, error, onClearData,onCancel }) => {
     return (
         <div>
             <div className="inputFieldWrap">
@@ -17,12 +17,21 @@ const TodoFields = ({ onAdd, todoData, change, onDelete, data, onEdit, selectIte
                 >
                     {selectItems ? "Add" : "Update"}
                 </button>
+                {!selectItems ? <button
+                    style={{backgroundColor:"#a6acaf"}}
+                    className="addBtn"
+                    onClick={onCancel}
+                >
+                    Cancel
+                </button>
+                    : null
+                }
                 <div className="validate">
                     {error}
                 </div>
             </div>
             {data?.map((item) => {
-                return <div className="axoisDataWrap">
+                return <div className="axoisDataWrap" key={item.id}>
                     <div>
                         <input
                             type="checkbox"
@@ -44,7 +53,7 @@ const TodoFields = ({ onAdd, todoData, change, onDelete, data, onEdit, selectIte
                     </div>
                 </div>
             })}
-           {data?.length ?  <button className="clearBtn" onClick={onClearData}>Clear All</button>: null}
+            {data?.length ? <button className="clearBtn" onClick={onClearData}>Clear All</button> : null}
         </div>
     );
 };

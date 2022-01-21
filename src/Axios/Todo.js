@@ -46,6 +46,7 @@ const Axios = () => {
             }
             e.preventDefault();
             HttpsReq.post("data", singleTodo).then((res) => {
+                console.log(res.data,"res")
                 setData([...data, res.data])
                 setTodoData("");
             })
@@ -64,11 +65,17 @@ const Axios = () => {
         setSelectId(id)
     }
     const onClearData = () => {
-        data.forEach((item)=>{
+        data.forEach((item) => {
             HttpsReq.delete(`data/${item.id}`).then((res) => {
-                setData();
+                setData([]);
             })
         })
+    }
+    const onCancel = () => {
+        if (todoData && !selectItems) {
+            setTodoData("");
+            setSelectItems(true)
+        }
     }
     return (
         <div className="Wrapper">
@@ -82,6 +89,7 @@ const Axios = () => {
                 error={error}
                 selectItems={selectItems}
                 onClearData={onClearData}
+                onCancel={onCancel}
             />
         </div>
     );
