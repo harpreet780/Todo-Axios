@@ -37,6 +37,7 @@ const Axios = () => {
             const foundnew = { ...found, name: todoData }
             HttpsReq.put(`data/${selectId}`, foundnew).then(() => {
                 setTodoData("");
+                setSelectItems(true)
             })
         }
         else {
@@ -46,7 +47,6 @@ const Axios = () => {
             }
             e.preventDefault();
             HttpsReq.post("data", singleTodo).then((res) => {
-                console.log(res.data,"res")
                 setData([...data, res.data])
                 setTodoData("");
             })
