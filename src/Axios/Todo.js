@@ -1,45 +1,80 @@
 import React, { useState, useEffect } from 'react';
-import axios from "axios"
+import { HttpsReq } from "./HttpApi/api"
+import TodoFields from './TodoFields';
 const Axios = () => {
     const [data, setData] = useState([]);
-    const [todoData, setTodoData] = useState("");
-    const TodoValue = (e) => {
-        setTodoData(e.target.value);
-    }
-    const onSubmit = (e) => {
-        let singleTodo = {
-            name: todoData,
-            complete: false
-        }
-        e.preventDefault();
-        axios.post("http://localhost:4000/data", singleTodo).then((res) => {
-            console.log(res.data)
-            data.push(res.data);
-            setTodoData("");
+    const [selectItems, setSelectItems] = useState(true);
+    const [selectId, setSelectId] = useState();
+    const [error, setError] = useState("")
+    const AxiosEffect = () => {
+        HttpsReq.get("data").then((res) => {
+            setData(res.data);
         })
     }
     useEffect(() => {
-        axios.get("http://localhost:4000/data").then((res) => {
-            console.log(res.data)
-            setData(res.data);
-        })
+        AxiosEffect()
     }, [])
+    const [ todoData, setTodoData] = useState("");
+    const TodoValue = (e) => {
+        setTodoData(e.target.value);
+        setError("")
+    }
+    const onAdd = (e) => {
+        if (!todoData) {
+            setError("must enter value*")
+            return
+        }
+        if (todoData && !selectItems) {
+            setData(data.map((item) => {
+                if (item.id === selectId) {
+                    return { item, name: todoData }
+                }
+                return item
+            })
+
+            )
+            HttpsReq.put(`data/${selectId}` ).then((res) => {
+            })
+        }  
+        else {
+            let singleTodo = {
+                name: todoData,
+                complete: false
+            }
+            e.preventDefault();
+            HttpsReq.post("data", singleTodo).then((res) => {
+                setData([...data, res.data])
+                setTodoData("");
+            })
+
+        }
+
+    }
+    const onDelete = (id) => {
+        HttpsReq.delete(`data/${id}`).then(() => {
+            const result = data.filter(item => item.id !== id);
+            setData(result);
+        })
+    }
+    const onEdit = (id) => {
+        const found = data.find(item => item.id === id);
+        setTodoData(found.name)
+        setSelectItems(false)
+        setSelectId(id)
+    }
+
     return (
         <div className="Wrapper">
-            <input
-                type="text"
-                name="name"
-                placeholder="Enter your name"
-                onChange={TodoValue}
-                className="TodoInput" />
-            <button
-                className="addBtn"
-                onClick={onSubmit}>
-                Add
-            </button>
-            {data?.map((item) => {
-                return <p>{item.name}</p>
-            })}
+            <TodoFields
+                data={data}
+                onAdd={onAdd}
+                onDelete={onDelete}
+                todoData={todoData}
+                change={TodoValue}
+                onEdit={onEdit}
+                error={error}
+                selectItems={selectItems}
+            />
         </div>
     );
 };
