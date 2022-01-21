@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TodoFields = ({ onAdd, todoData, change, onDelete, data, onEdit, selectItems, error }) => {
+const TodoFields = ({ onAdd, todoData, change, onDelete, data, onEdit, selectItems, error,onClearData }) => {
     return (
         <div>
             <div className="inputFieldWrap">
@@ -28,7 +28,7 @@ const TodoFields = ({ onAdd, todoData, change, onDelete, data, onEdit, selectIte
                             type="checkbox"
                             id=""
                             name=""
-                            value="" />
+                            value="checkbox" />
                         <span>{item.name}</span>
                     </div>
                     <div>
@@ -44,7 +44,7 @@ const TodoFields = ({ onAdd, todoData, change, onDelete, data, onEdit, selectIte
                     </div>
                 </div>
             })}
-            <button className="clearBtn">Clear All</button>
+           {data?.length ?  <button className="clearBtn" onClick={onClearData}>Clear All</button>: null}
         </div>
     );
 };

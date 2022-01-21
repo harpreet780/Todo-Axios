@@ -14,7 +14,7 @@ const Axios = () => {
     useEffect(() => {
         AxiosEffect()
     }, [])
-    const [ todoData, setTodoData] = useState("");
+    const [todoData, setTodoData] = useState("");
     const TodoValue = (e) => {
         setTodoData(e.target.value);
         setError("")
@@ -33,9 +33,12 @@ const Axios = () => {
             })
 
             )
-            HttpsReq.put(`data/${selectId}` ).then((res) => {
+            const found = data.find(item => item.id === selectId);
+            const foundnew = { ...found, name: todoData }
+            HttpsReq.put(`data/${selectId}`, foundnew).then(() => {
+                setTodoData("");
             })
-        }  
+        }
         else {
             let singleTodo = {
                 name: todoData,
@@ -46,9 +49,7 @@ const Axios = () => {
                 setData([...data, res.data])
                 setTodoData("");
             })
-
         }
-
     }
     const onDelete = (id) => {
         HttpsReq.delete(`data/${id}`).then(() => {
@@ -62,7 +63,13 @@ const Axios = () => {
         setSelectItems(false)
         setSelectId(id)
     }
-
+    const onClearData = () => {
+        data.forEach((item)=>{
+            HttpsReq.delete(`data/${item.id}`).then((res) => {
+                setData();
+            })
+        })
+    }
     return (
         <div className="Wrapper">
             <TodoFields
@@ -74,6 +81,7 @@ const Axios = () => {
                 onEdit={onEdit}
                 error={error}
                 selectItems={selectItems}
+                onClearData={onClearData}
             />
         </div>
     );
