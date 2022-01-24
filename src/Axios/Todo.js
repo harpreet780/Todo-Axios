@@ -43,7 +43,7 @@ const Axios = () => {
         else {
             let singleTodo = {
                 name: todoData,
-                complete: false
+                complete: false,
             }
             e.preventDefault();
             HttpsReq.post("data", singleTodo).then((res) => {
@@ -66,7 +66,7 @@ const Axios = () => {
     }
     const onClearData = () => {
         data.forEach((item) => {
-            HttpsReq.delete(`data/${item.id}`).then((res) => {
+            HttpsReq.delete(`data/${item.id}`).then(() => {
                 setData([]);
             })
         })
@@ -77,19 +77,36 @@ const Axios = () => {
             setSelectItems(true)
         }
     }
+    const handleCheck=(id)=> {
+            setTodoData("");
+            setSelectId(id)
+            setData(data.map((item) => {
+                if (item.id === id) {
+                    return { ...item, complete: true }
+                }
+                return item
+            })
+            )
+            console.log("data",data)
+            HttpsReq.put(`data/${id}`,id).then((res) => {
+               console.log(res.data,"data");
+               
+            }) 
+      }
     return (
         <div className="Wrapper">
             <TodoFields
                 data={data}
                 onAdd={onAdd}
                 onDelete={onDelete}
-                todoData={todoData}
+                todoData={todoData}          
                 change={TodoValue}
                 onEdit={onEdit}
                 error={error}
                 selectItems={selectItems}
                 onClearData={onClearData}
                 onCancel={onCancel}
+                handleCheck={handleCheck}
             />
         </div>
     );
