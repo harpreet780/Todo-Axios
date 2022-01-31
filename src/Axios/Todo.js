@@ -77,29 +77,22 @@ const Axios = () => {
             setSelectItems(true)
         }
     }
-    const handleCheck=(id)=> {
-            setTodoData("");
-            setSelectId(id)
-            setData(data.map((item) => {
-                if (item.id === id) {
-                    return { ...item, complete: true }
-                }
-                return item
-            })
-            )
-            console.log("data",data)
-            HttpsReq.put(`data/${id}`,id).then((res) => {
-               console.log(res.data,"data");
-               
-            }) 
-      }
+    const handleCheck = (id) => {
+        let newData = [...data];
+        const foundcheck = newData.find(item => item.id === id);
+        const foundObjIndex = newData.indexOf(foundcheck);
+        newData[foundObjIndex].complete = !newData[foundObjIndex].complete;
+        HttpsReq.put(`data/${id}`, foundcheck).then(() => {
+            setData(newData);
+        })
+    }
     return (
         <div className="Wrapper">
             <TodoFields
                 data={data}
                 onAdd={onAdd}
                 onDelete={onDelete}
-                todoData={todoData}          
+                todoData={todoData}
                 change={TodoValue}
                 onEdit={onEdit}
                 error={error}

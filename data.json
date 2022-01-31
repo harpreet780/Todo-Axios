@@ -1,29 +1,19 @@
 {
   "data": [
     {
-      "name": "sfr",
-      "complete": true,
-      "id": 2
-    },
-    {
-      "name": "fnddda",
-      "complete": true,
+      "name": "hj",
+      "complete": false,
       "id": 3
     },
     {
-      "name": "saini",
+      "name": "sfr",
       "complete": true,
       "id": 4
     },
     {
-      "name": "kaur",
+      "name": "fgfh",
       "complete": true,
       "id": 5
-    },
-    {
-      "name": "preet",
-      "complete": true,
-      "id": 6
     }
   ]
 }
